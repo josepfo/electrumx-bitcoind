@@ -4,27 +4,27 @@ services:
     image: josepfo/bitcoind
     build: "./bitcoind"
     expose:
-      # rpc api
       - "18443"
     volumes:
       - ./data/bitcoind:/home/bitcoin/.bitcoin
 
   electrumx:
     image: josepfo/electrumx
-    depends_on:
-      - "bitcoind"
-    command: ["init"]  
+    build: "./electrumx"
     ports:
       - "55002:50002"
       - "55001:50001"
-    expose:
+    expose: 
       - "50001"
-      - "50002"
+      - "50002"  
+    depends_on:
+      - "bitcoind"
+    command: ["init"]  
     volumes:
       - ./data/electrumx:/data
     environment:
-      # bitcoind is valid
       - DAEMON_URL=http://electrum:electrum@bitcoind:18443
       - COIN=BitcoinSegwit
       - NET=regtest
+
 

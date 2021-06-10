@@ -29,14 +29,10 @@ RUN set -ex \
   && rm *.tar.gz *.asc \
   && rm -rf /opt/bitcoin-${BITCOIN_VERSION}/bin/bitcoin-qt
 
-COPY docker-entrypoint.sh /entrypoint.sh
-
 VOLUME ["/home/bitcoin/.bitcoin"]
 
 ADD bitcoin.conf /home/bitcoin/
 
 EXPOSE 8332 8333 18332 18333 18443 18444 38333 38332
 
-RUN bitcoind -version | grep "Bitcoin Core version v${BITCOIN_VERSION}"
-
-CMD ["bitcoind", "-daemon", "--datadir=/home/bitcoin/.bitcoin", "-conf=/home/bitcoin/bitcoin.conf"]
+CMD ["bitcoind","--datadir=/home/bitcoin/.bitcoin", "-conf=/home/bitcoin/bitcoin.conf"]
